@@ -35,9 +35,17 @@ module.exports = {
     const patients = await Appointment.findAll({
       attributes: ["patientId"],
       where: { physicianId },
+      raw: true,
+      include: [
+        {
+          model: Patient,
+          required: true,
+          attributes: ["name", "phone", "email"],
+        },
+      ],
     }).catch((error) => res.status(500).json({ msg: "Falha na conexao" }));
 
-    const obj = patients.content;
+    const obj = patients;
     console.log(obj);
     if (patients) {
       if (patients == "")
